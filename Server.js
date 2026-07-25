@@ -381,6 +381,34 @@ socket.on("npcMove", (data) => {
   });
 });
 
+// data: { npcId, isAiming }
+socket.on("npcAim", (data) => {
+  const player = players[socket.id];
+  if (!player) return;
+  const npc = npcs[player.room]?.[data.npcId];
+  if (!npc) return;
+
+  npc.isAiming = !!data.isAiming;
+
+  socket.to(player.room).emit("npcAimChanged", {
+    npcId: data.npcId,
+    isAiming: npc.isAiming,
+  });
+});
+
+// data: { npcId, weapon, origin: {x,y,z}, direction: {x,y,z} }
+socket.on("npcWeaponFire", (data) => {
+  const player = players[socket.id];
+  if (!player) return;
+
+  socket.to(player.room).emit("npcWeaponFired", {
+    npcId: data.npcId,
+    weapon: data.weapon,
+    origin: data.origin,
+    direction: data.direction,
+  });
+});
+
   // data: { npcId, amount }
   socket.on("npcDamage", (data) => {
     const player = players[socket.id];
