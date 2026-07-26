@@ -58,26 +58,27 @@ function clearRoomIfEmpty(room) {
 io.on("connection", (socket) => {
   console.log(`[connect] ${socket.id}`);
 
-  // Uncomment for verbose debugging of every event received:
-  // socket.onAny((eventName, ...args) => console.log(`[received] "${eventName}"`, args));
-
-  // ----------------------------------------------------------
+// ----------------------------------------------------------
   // JOIN
   // data: { name, room (optional, defaults to "lobby") }
   // ----------------------------------------------------------
-socket.on("playerJoin", (data) => {
-  const room = data?.room || "lobby";
+  socket.on("playerJoin", (data) => {
+    const room = data?.room || "lobby";
 
-  players[socket.id] = {
-    name: data?.name || `Player_${socket.id.substring(0, 4)}`,
-    room,
-    x: data?.x ?? 0,
-    y: data?.y ?? 0,
-    z: data?.z ?? 0,
-    // ...rest of your fields
-  };
-  // ...rest stays the same
-});
+    players[socket.id] = {
+      name: data?.name || `Player_${socket.id.substring(0, 4)}`,
+      room,
+      x: data?.x ?? 0,
+      y: data?.y ?? 0,
+      z: data?.z ?? 0,
+      pitch: 0,
+      yaw: 0,
+      roll: 0,
+      stance: "standing",
+      hp: 100,
+      currentWeapon: "none",
+      isAiming: false,
+    };
 
     ensureRoomNpcStore(room);
     socket.join(room);
