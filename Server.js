@@ -65,21 +65,19 @@ io.on("connection", (socket) => {
   // JOIN
   // data: { name, room (optional, defaults to "lobby") }
   // ----------------------------------------------------------
-  socket.on("playerJoin", (data) => {
-    const room = data?.room || "lobby";
+socket.on("playerJoin", (data) => {
+  const room = data?.room || "lobby";
 
-    players[socket.id] = {
-      name: data?.name || `Player_${socket.id.substring(0, 4)}`,
-      room,
-      x: 0,
-      y: 0,
-      z: 0,
-      rotation: 0,
-      stance: "standing",   // standing | crouching | prone
-      hp: 100,
-      currentWeapon: "none",
-      isAiming: false,
-    };
+  players[socket.id] = {
+    name: data?.name || `Player_${socket.id.substring(0, 4)}`,
+    room,
+    x: data?.x ?? 0,
+    y: data?.y ?? 0,
+    z: data?.z ?? 0,
+    // ...rest of your fields
+  };
+  // ...rest stays the same
+});
 
     ensureRoomNpcStore(room);
     socket.join(room);
