@@ -64,7 +64,7 @@ io.on("connection", (socket) => {
   // ----------------------------------------------------------
   socket.on("playerJoin", (data) => {
     const room = data?.room || "lobby";
-
+console.log("[playerJoin data]", data);
     players[socket.id] = {
       name: data?.name || `Player_${socket.id.substring(0, 4)}`,
       room,
@@ -153,6 +153,8 @@ socket.on("playerMove", (data) => {
   player.x = data.x;
   player.y = data.y;
   player.z = data.z;
+  player.moveForward = data.moveForward;
+  player.moveRight = data.moveRight;
   player.pitch = data.pitch;
   player.yaw = data.yaw;
   player.roll = data.roll;
@@ -162,6 +164,8 @@ socket.on("playerMove", (data) => {
     x: player.x,
     y: player.y,
     z: player.z,
+    moveForward: player.moveForward,
+    moveRight: player.moveRight,
     pitch: player.pitch,
     yaw: player.yaw,
     roll: player.roll,
